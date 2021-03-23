@@ -41,9 +41,11 @@ def vote():
                 can_c += 1
     
     # Printing votes
+    totalvotes = can_a + can_b + can_c
     print(f"Candidate A has {can_a} votes.")
     print(f"Candidate B has {can_b} votes.")
     print(f"Candidate C has {can_c} votes.")
+    print(f'Total votes: {totalvotes}')
 
     askagain = input('Would you like to go again, [y,n]')
     if askagain == 'y':
