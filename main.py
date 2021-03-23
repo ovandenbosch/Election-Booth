@@ -1,4 +1,5 @@
 # O.vandenBosch - 9/3/21
+# Cloned from private repository on GitHub https://github.com/ovandenbosch
 # Voting system
 
 
@@ -18,6 +19,7 @@ def vote():
         # Getting input
         vote = input("Which candidate would you like to vote for, A, B or C? ")
         print('\n')
+        # Allows both A or a for example
         vote = vote.lower()
         # Checking if end keyword again
         if vote == 'end':
@@ -42,6 +44,10 @@ def vote():
     print(f"Candidate A has {can_a} votes.")
     print(f"Candidate B has {can_b} votes.")
     print(f"Candidate C has {can_c} votes.")
+
+    askagain = input('Would you like to go again, [y,n]')
+    if askagain == 'y':
+        vote()
 
 
 # Calling function and stopping if any errors
