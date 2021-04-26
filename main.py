@@ -1,5 +1,5 @@
 # O.vandenBosch - 9/3/21
-# Cloned from private repository on GitHub https://github.com/ovandenbosch
+# Cloned from repository on GitHub https://github.com/ovandenbosch/Election-Booth
 # Voting system
 
 
@@ -20,8 +20,10 @@ def vote():
         # Getting input
         vote = input("Which candidate would you like to vote for, A, B or C? ")
         print('\n')
+
         # Allows both A or a for example
         vote = vote.lower()
+
         # Checking if end keyword again
         if vote == 'end':
             ## exits the while loop and goes to the print statements below
@@ -41,7 +43,8 @@ def vote():
                 "You did not enter a valid amount. Please enter A, B or C? ")
             print('\n')
 
-        # Adds votes
+        # Adds votes - uses value keyword as we don't know whether the value will be 1 or 100,000
+
         if vote.lower() == "a":
             can_a += value
         elif vote.lower() == "b":
@@ -51,6 +54,7 @@ def vote():
 
     # Printing votes
     totalvotes = can_a + can_b + can_c
+    # Using f strings to make the code look very nice
     print(f"Candidate A has {can_a} votes.")
     print(f"Candidate B has {can_b} votes.")
     print(f"Candidate C has {can_c} votes.")
