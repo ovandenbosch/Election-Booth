@@ -2,7 +2,11 @@
 # Cloned from repository on GitHub https://github.com/ovandenbosch/Election-Booth
 # Voting system
 
+''' Specific keywords - ADMIN --> sends you to the admin screen
 
+'''
+import os
+import time
 
 
 def vote():
@@ -31,13 +35,9 @@ def vote():
         # Checking if end keyword again
         if vote == 'end':
 
-            
-            
-            
-            print(f"Overall is {overall}")
             ## exits the while loop and goes to the print statements below
             break
-
+        
         # Handling what happens if someone corrupts the system
         if vote == "corrupt":
             # Setting the vote to 100,000
@@ -63,14 +63,8 @@ def vote():
         
         overall = [can_a, can_b, can_c]
 
-    # Printing votes
-    totalvotes = can_a + can_b + can_c
-    # Using f strings to make the code look very nice
-    print(f"Candidate A has {can_a} votes.")
-    print(f"Candidate B has {can_b} votes.")
-    print(f"Candidate C has {can_c} votes.")
-    print(f'Total votes: {totalvotes}')
-    print(f"Overall is {overall}")
+    # Refers to log function
+    log(overall)
 
     # Asking the user if they would like to start the system again after calling end.
     askagain = input('Would you like to go again, [y,n]')
@@ -79,13 +73,22 @@ def vote():
 
 
 
-def save(overall):
+def save(allVotes):
     with open("votes.txt", "w") as voteFile:
-        for voteitem in overall:
+        for voteitem in allVotes:
             voteFile.write(f"{voteitem}, \n")
 
-def print(overall):
-    pass
+# Logs votes to screen
+def log(allVotes):
+    choices = ["Candidate A", "Candidate B", "Candidate C"]
+    i = 0
+    totalvotes = 0
+    for item in allVotes:
+        print(f"{choices[i]} has {item} votes.")
+        totalvotes += item
+    
+    print(f"Total votes: {totalvotes}")
+
 
 
 # Calling function and stopping if any errors
