@@ -38,13 +38,10 @@ def vote():
             ## exits the while loop and goes to the print statements below
             break
         
-        # Handling what happens if someone corrupts the system
-        if vote == "corrupt":
-            # Setting the vote to 100,000
-            value = 100000
-            vote = input(
-                "You have corrupted the system you naughty person! Choose who you want to give 100,000 votes to: "
-            )
+        if vote == 'admin':
+            admin()
+
+       
 
         # User validation cross checking against list
         while vote not in letters:
@@ -89,7 +86,31 @@ def log(allVotes):
     
     print(f"Total votes: {totalvotes}")
 
+ # Handling what happens if someone corrupts the system
+def corrupt(value):
+    # Setting the vote to 100,000
+    value = 100000
+    vote = input(
+        "You have corrupted the system you naughty person! Choose who you want to give 100,000 votes to: "
+    )
+    
 
+def admin():
+    os.system("Clear")
+    print(" VOTING SYSTEM ")
+
+    choice = int(input('''
+    Pick an option
+
+    1. CORRUPT
+    2. SAVE
+    3. LOAD
+    4. EDIT
+    
+    '''))
+
+    if choice == 1:
+        corrupt(value)
 
 # Calling function and stopping if any errors
 if __name__ == '__main__':
@@ -101,7 +122,3 @@ if __name__ == '__main__':
         print('Runtime Error')
     finally:
         print("Have a good day")
-
-
-
-
