@@ -110,7 +110,7 @@ def admin():
     '''))
 
     if choice == 1:
-        corrupt(value)
+        corrupt()
 
 # Calling function and stopping if any errors
 if __name__ == '__main__':
