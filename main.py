@@ -9,6 +9,7 @@ from __future__ import print_function, unicode_literals
 from PyInquirer import prompt, print_json
 import os
 import time
+from functions import get_password
 voteValue = 1
 
 
@@ -18,15 +19,11 @@ def voteFunc(value):
     can_a = 0
     can_b = 0
     can_c = 0
-    
-     
-    
     vote = ""
     letters = ['a', 'b', 'c', 'corrupt', 'admin', 'end']
     overall = [0, 0, 0]
 
     # Checking if END keyword has not been called
-
     while vote != "end":
 
         voteFunc.overall = overall
@@ -56,6 +53,7 @@ def voteFunc(value):
             Logged_in = False
             while attempt_num < 3:
                 os.system('Clear')
+                
                 questions = [
                                 {
                                     'type': 'password',
@@ -63,10 +61,10 @@ def voteFunc(value):
                                     'name': 'password'
                                 }
                             ]
-
+                # Uses external module called Pyinquirer to create a nice prompt            
                 password = prompt(questions)
 
-                if password ['password']== 'VOTING 101':
+                if  password['password'] == 'VOTING 101':
                     Logged_in = True
                     break
                 
@@ -89,9 +87,7 @@ def voteFunc(value):
                     can_b = load.varNames[1]
                     can_c = load.varNames[2]
                 Logged_in = False
-        
-       
-        
+         
         # Adds votes - uses value keyword as we don't know whether the value will be 1 or 100,000
         if vote.lower() == "a":
             can_a += value
@@ -110,8 +106,6 @@ def voteFunc(value):
     # Refers to display function
     display(overall)
     
-
- 
 
 # Saves vote data to a text file
 def save(allVotes):
@@ -141,7 +135,6 @@ def load():
 def change():
     time.sleep(3)
     
-
 # Displays votes to screen
 def display(allVotes):
     choices = ["Candidate A", "Candidate B", "Candidate C"]
@@ -154,7 +147,6 @@ def display(allVotes):
     
     print(f"Total votes: {totalvotes}")
   
-
 def admin():
     os.system("Clear")
     print(" VOTING SYSTEM ")
@@ -162,40 +154,40 @@ def admin():
     # Initialise our admin value object
     admin.value = 1
 
-    choice = int(input('''
-    Pick an option
+    options = [
+    {
+        'type': 'list',
+        'name': 'choice',
+        'message': 'What do you want to do?',
+        'choices': [
+            'Save Data',
+            'Load Data',
+            'Display votes',
+            'Alter votes',
+            'Return to voting'
+        ]
+    }]
 
-    1. Save Data
-    2. Load Data from text file
-    3. Display current vote count
-    4. Alter current votes
-    5. Return to voting
-    
-    '''))
+    choice = (prompt(options)['choice'])
 
-    if choice == 1:
+    if choice == 'Save Data':
         save(voteFunc.overall)
 
-    if choice == 2:
+    if choice == 'Load Data':
         load()
 
-    if choice == 3:
+    if choice == 'Display votes':
         os.system('Clear')
         display(voteFunc.overall)
         time.sleep(3)
 
-    if choice == 4:
+    if choice == 'Alter votes':
         change()
 
-    if choice == 5:
+    if choice == 'Return to voting':
         os.system('Clear')
 
-    # To corrupt system, hacker must enter 6
-    if choice == 6:
-        admin.value = 122
         
-        
-
 
 # Calling function and stopping if any errors
 if __name__ == '__main__':
