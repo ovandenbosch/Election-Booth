@@ -20,7 +20,7 @@ def voteFunc(value):
      
     
     vote = ""
-    letters = ['a', 'b', 'c', 'corrupt', 'admin']
+    letters = ['a', 'b', 'c', 'corrupt', 'admin', 'end']
     overall = [0, 0, 0]
 
     # Checking if END keyword has not been called
@@ -35,6 +35,13 @@ def voteFunc(value):
         # Allows both A or a for example
         vote = vote.lower()
 
+        # User validation cross checking against list
+        while vote not in letters:
+            vote = input(
+                "You did not enter a valid amount. Please enter A, B or C? ")
+            print('\n')
+
+
         # Checking if end keyword again
         if vote == 'end':
             break
@@ -43,7 +50,8 @@ def voteFunc(value):
             attempt_num = 0
             Logged_in = False
             while attempt_num < 3:
-                password = input("What is the password")
+                os.system('Clear')
+                password = input("What is the password: ")
                 if password == 'VOTING 101':
                     Logged_in = True
                     break
@@ -61,7 +69,6 @@ def voteFunc(value):
                 load.loaded = False
                 admin()
                 value = admin.value
-                time.sleep(3)
                 if load.loaded == True:              
                     can_a = load.varNames[0]
                     can_b = load.varNames[1]
@@ -69,12 +76,7 @@ def voteFunc(value):
                 Logged_in = False
         
        
-        # User validation cross checking against list
-        while vote not in letters:
-            vote = input(
-                "You did not enter a valid amount. Please enter A, B or C? ")
-            print('\n')
-
+        
         # Adds votes - uses value keyword as we don't know whether the value will be 1 or 100,000
         if vote.lower() == "a":
             can_a += value
@@ -162,7 +164,9 @@ def admin():
         load()
 
     if choice == 3:
+        os.system('Clear')
         display(voteFunc.overall)
+        time.sleep(3)
 
     if choice == 4:
         change()
