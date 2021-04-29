@@ -5,6 +5,8 @@
 ''' Specific keywords - ADMIN --> sends you to the admin screen
 
 '''
+from __future__ import print_function, unicode_literals
+from PyInquirer import prompt, print_json
 import os
 import time
 voteValue = 1
@@ -45,25 +47,38 @@ def voteFunc(value):
         # Checking if end keyword again
         if vote == 'end':
             break
+
+        if vote == 'corrupt':
+            value = 100000
         
         if vote == 'admin':
             attempt_num = 0
             Logged_in = False
             while attempt_num < 3:
                 os.system('Clear')
-                password = input("What is the password: ")
-                if password == 'VOTING 101':
+                questions = [
+                                {
+                                    'type': 'password',
+                                    'message': 'Enter your password',
+                                    'name': 'password'
+                                }
+                            ]
+
+                password = prompt(questions)
+
+                if password ['password']== 'VOTING 101':
                     Logged_in = True
                     break
                 
                 elif attempt_num == 3:
                     print("You have entered the wrong password too many times!")
-                    time.sleep(3)
+                    time.sleep(2)
 
                 else:
                     print('Your password was incorrect')
                     attempt_num += 1
                     print(attempt_num)
+                    time.sleep(1)
                     
             if Logged_in == True:
                 load.loaded = False
@@ -135,6 +150,7 @@ def display(allVotes):
     for item in allVotes:
         print(f"{choices[i]} has {item} votes.")
         totalvotes += item
+        i += 1
     
     print(f"Total votes: {totalvotes}")
   
