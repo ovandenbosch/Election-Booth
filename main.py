@@ -9,7 +9,7 @@ from __future__ import print_function, unicode_literals
 from PyInquirer import prompt, print_json
 import os
 import time
-from functions import get_password
+
 voteValue = 1
 
 
@@ -146,10 +146,11 @@ def display(allVotes):
         i += 1
     
     print(f"Total votes: {totalvotes}")
-  
+
+# Admin screen 
 def admin():
     os.system("Clear")
-    print(" VOTING SYSTEM ")
+    print(" VOTING SYSTEM \n")
     
     # Initialise our admin value object
     admin.value = 1
