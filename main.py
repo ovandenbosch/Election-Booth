@@ -9,6 +9,7 @@ import os
 import time
 voteValue = 1
 
+
 def voteFunc(value):
 
     # Amount of votes per candidate at beginning
@@ -39,14 +40,33 @@ def voteFunc(value):
             break
         
         if vote == 'admin':
-            load.loaded = False
-            admin()
-            value = admin.value
-            time.sleep(3)
-            if load.loaded == True:              
-                can_a = load.varNames[0]
-                can_b = load.varNames[1]
-                can_c = load.varNames[2]
+            attempt_num = 0
+            Logged_in = False
+            while attempt_num < 3:
+                password = input("What is the password")
+                if password == 'VOTING 101':
+                    Logged_in = True
+                    break
+                
+                elif attempt_num == 3:
+                    print("You have entered the wrong password too many times!")
+                    time.sleep(3)
+
+                else:
+                    print('Your password was incorrect')
+                    attempt_num += 1
+                    print(attempt_num)
+                    
+            if Logged_in == True:
+                load.loaded = False
+                admin()
+                value = admin.value
+                time.sleep(3)
+                if load.loaded == True:              
+                    can_a = load.varNames[0]
+                    can_b = load.varNames[1]
+                    can_c = load.varNames[2]
+                Logged_in = False
         
        
         # User validation cross checking against list
