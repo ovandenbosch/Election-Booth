@@ -64,7 +64,7 @@ def voteFunc(value):
                 # Uses external module called Pyinquirer to create a nice prompt            
                 password = prompt(questions)
 
-                if  password['password'] == 'VOTING 101':
+                if  password['password'] == 'a':
                     Logged_in = True
                     break
                 
@@ -123,13 +123,11 @@ def load():
         i = 0
         items = voteFile.readlines()
         for voteitem in items:
-            voteitem = int(voteitem[0].split(', \n')[0])
-
+            voteitem = int(voteitem.split(', \n')[0])
             load.varNames[i] = voteitem
             i+=1
     
     load.loaded = True
-    time.sleep(3)
 
 # Function to change votes
 def change():
