@@ -2,6 +2,8 @@
 # Created by https://www.toptal.com/developers/gitignore/api/python,vscode,macos
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,vscode,macos
 
+poetry.lock
+pyproject.toml
 ### macOS ###
 # General
 .DS_Store

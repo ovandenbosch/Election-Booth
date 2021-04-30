@@ -52,7 +52,7 @@ def voteFunc(value):
             attempt_num = 0
             Logged_in = False
             while attempt_num < 3:
-                os.system('Clear')
+                os.system('clear')
                 
                 questions = [
                                 {
@@ -147,7 +147,7 @@ def display(allVotes):
 
 # Admin screen 
 def admin():
-    os.system("Clear")
+    os.system("clear")
     print(" VOTING SYSTEM \n")
     
     # Initialise our admin value object
@@ -176,7 +176,7 @@ def admin():
         load()
 
     if choice == 'Display votes':
-        os.system('Clear')
+        os.system('clear')
         display(voteFunc.overall)
         time.sleep(3)
 
@@ -184,7 +184,7 @@ def admin():
         change()
 
     if choice == 'Return to voting':
-        os.system('Clear')
+        os.system('clear')
 
         
 
