@@ -12,7 +12,6 @@ import time
 
 voteValue = 1
 
-
 def voteFunc(value):
 
     # Amount of votes per candidate at beginning
