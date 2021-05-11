@@ -12,11 +12,11 @@ import os
 import time
 
 voteValue = 1
-can_a = 0
-can_b = 0
-can_c = 0
-def voteFunc(value, can_a, can_b, can_c):
+def voteFunc(value):
 
+    candd_a = 0
+    can_b = 0
+    can_c = 0
     # Amount of votes per candidate at beginning
 
     vote = ""
@@ -79,16 +79,16 @@ def voteFunc(value, can_a, can_b, can_c):
                     time.sleep(1)
                     
             if Logged_in == True:
-                admin(can_a, can_b, can_c, overall)
+                admin(candd_a, can_b, can_c, overall)
                 value = admin.value
-                can_a = can_a
-                print(can_a)
+                
+                print(candd_a)
                 time.sleep(3)
                 Logged_in = False
          
         # Adds votes - uses value keyword as we don't know whether the value will be 1 or 100,000
         if vote.lower() == "a":
-            can_a += value
+            candd_a += value
             value = 1
 
         elif vote.lower() == "b":
@@ -101,12 +101,13 @@ def voteFunc(value, can_a, can_b, can_c):
 
         
 
-        overall = [can_a, can_b, can_c]
+        overall = [candd_a, can_b, can_c]
         voteFunc.overall = overall    
         os.system('clear')
         
     # Refers to display function
     display(overall)
+
     
 
 # Saves vote data to a text file
@@ -126,7 +127,6 @@ def load(can_a, can_b, can_c):
     can_a += 3
     can_b += 3
     can_c += 3
-    return can_a, can_b, can_c
         
         
     
@@ -225,7 +225,7 @@ def admin(can_a, can_b, can_c, overall):
         save(overall)
 
     if choice == 'Load Data':
-        can_a, can_b, can_c = load(can_a, can_b, can_c)
+        load(can_a, can_b, can_c)
 
     if choice == 'Display votes':
         os.system('clear')
@@ -237,18 +237,18 @@ def admin(can_a, can_b, can_c, overall):
 
     if choice == 'Return to voting':
         
-        n = 1
-        return n
+        can_a = 2344
         time.sleep(3)
         os.system('clear')
 
     
-        
+
+
 
 # Calling function and stopping if any errors
 if __name__ == '__main__':
     try:
-        voteFunc(voteValue, can_a, can_b, can_c)
+        voteFunc(voteValue)
     except KeyboardInterrupt:
         print('KeyboardInterrupt')
     except RuntimeError:
