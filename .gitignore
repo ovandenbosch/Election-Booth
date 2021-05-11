@@ -2,6 +2,9 @@
 # Created by https://www.toptal.com/developers/gitignore/api/python,vscode,macos
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,vscode,macos
 
+## Don't commit vote totals
+votes.txt
+
 poetry.lock
 pyproject.toml
 ### macOS ###
