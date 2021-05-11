@@ -130,6 +130,9 @@ def load():
 
 # Function to change votes
 def change():
+    x = input("For which candidate would you like to change the votes for? ")
+    for item in voteFunc.overall:
+        print(item)
     time.sleep(3)
     
 # Displays votes to screen
@@ -161,7 +164,12 @@ def admin():
             'Save Data',
             'Load Data',
             'Display votes',
-            'Alter votes',
+            # 'Alter votes',
+            {
+                'name': 'Alter Votes',
+                'disabled': 'Unavailable at this time'
+                
+            },
             'Return to voting'
         ]
     }]
