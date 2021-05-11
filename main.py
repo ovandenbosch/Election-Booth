@@ -6,7 +6,7 @@
 
 '''
 from __future__ import print_function, unicode_literals
-from PyInquirer import prompt, print_json
+from PyInquirer import prompt
 import os
 import time
 
@@ -81,6 +81,8 @@ def voteFunc(value):
                 load.loaded = False
                 admin()
                 value = admin.value
+
+                
                 if load.loaded == True:              
                     can_a = load.varNames[0]
                     can_b = load.varNames[1]
@@ -130,10 +132,50 @@ def load():
 
 # Function to change votes
 def change():
-    x = input("For which candidate would you like to change the votes for? ")
-    for item in voteFunc.overall:
-        print(item)
-    time.sleep(3)
+    options = [
+    {
+        'type': 'list',
+        'name': 'choice',
+        'message': 'For which candidate would you like to change the votes for?',
+        'choices': [
+            'Candidate A',
+            'Candidate B',
+            'Candidate C',
+            'Return to voting',
+        ]
+    }]
+
+    choice = (prompt(options)['choice'])
+
+    if choice == 'Candidate A':
+        print(f"Candidate C currently has {voteFunc.overall[2]} votes")
+        votenum = input("How many votes do you want to give to Candidate A?")
+        while not votenum.isnumeric():
+            votenum = input("Please enter a number: ")
+            print(f"Successfully changed the amount of votes to {votenum}")
+        voteFunc.overall[0] = votenum
+        print(voteFunc.overall[0])
+        time.sleep(3)
+
+    elif choice == 'Candidate B':
+        print(f"Candidate C currently has {voteFunc.overall[2]} votes")
+        votenum = int(input("How many votes do you want to give to Candidate B?"))
+        while not votenum.isnumeric():
+            votenum = int(input("Please enter a number: "))
+            print(f"Successfully changed the amount of votes to {votenum}")
+
+        voteFunc.overall[1] = votenum
+
+    elif choice == 'Candidate C':
+        print(f"Candidate C currently has {voteFunc.overall[2]} votes")
+        votenum = int(input("How many votes do you want to give to Candidate C?"))
+        
+        while type(votenum) != int:
+            votenum = int(input("Please enter a number: "))
+        voteFunc.overall[2] = votenum
+
+    if choice == 'Return to voting':
+        os.system('clear')
     
 # Displays votes to screen
 def display(allVotes):
@@ -165,11 +207,7 @@ def admin():
             'Load Data',
             'Display votes',
             # 'Alter votes',
-            {
-                'name': 'Alter Votes',
-                'disabled': 'Unavailable at this time'
-                
-            },
+            'Alter votes',
             'Return to voting'
         ]
     }]
