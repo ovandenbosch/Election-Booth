@@ -6,18 +6,19 @@
 
 '''
 from __future__ import print_function, unicode_literals
+from typing import overload
 from PyInquirer import prompt
 import os
 import time
 
 voteValue = 1
-
-def voteFunc(value):
+can_a = 0
+can_b = 0
+can_c = 0
+def voteFunc(value, can_a, can_b, can_c):
 
     # Amount of votes per candidate at beginning
-    can_a = 0
-    can_b = 0
-    can_c = 0
+
     vote = ""
     letters = ['a', 'b', 'c', 'corrupt', 'admin', 'end']
     overall = [0, 0, 0]
@@ -63,7 +64,7 @@ def voteFunc(value):
                 # Uses external module called Pyinquirer to create a nice prompt            
                 password = prompt(questions)
 
-                if  password['password'] == 'a':
+                if password['password'] == 'a':
                     Logged_in = True
                     break
                 
@@ -78,30 +79,30 @@ def voteFunc(value):
                     time.sleep(1)
                     
             if Logged_in == True:
-                load.loaded = False
-                admin()
+                admin(can_a, can_b, can_c, overall)
                 value = admin.value
-
-                
-                if load.loaded == True:              
-                    can_a = load.varNames[0]
-                    can_b = load.varNames[1]
-                    can_c = load.varNames[2]
+                can_a = can_a
+                print(can_a)
+                time.sleep(3)
                 Logged_in = False
          
         # Adds votes - uses value keyword as we don't know whether the value will be 1 or 100,000
         if vote.lower() == "a":
             can_a += value
             value = 1
+
         elif vote.lower() == "b":
             can_b += value
             value = 1
+
         elif vote.lower() == "c":
             can_c += value
             value = 1
+
         
-        overall = [can_a, can_b, can_c] 
-        voteFunc.overall = overall     
+
+        overall = [can_a, can_b, can_c]
+        voteFunc.overall = overall    
         os.system('clear')
         
     # Refers to display function
@@ -115,23 +116,25 @@ def save(allVotes):
             voteFile.write(f"{voteitem}, \n")
 
 # Loads existing data from a text file
-def load():
+def load(can_a, can_b, can_c):
+    
     with open("votes.txt", "r") as voteFile:
-        can_a = 0
-        can_b = 0
-        can_c = 0
-        load.varNames = [can_a, can_b, can_c]
-        i = 0
         items = voteFile.readlines()
         for voteitem in items:
             voteitem = int(voteitem.split(', \n')[0])
-            load.varNames[i] = voteitem
-            i+=1
+
+    can_a += 3
+    can_b += 3
+    can_c += 3
+    return can_a, can_b, can_c
+        
+        
     
-    load.loaded = True
+       
+    
 
 # Function to change votes
-def change():
+def change(can_a, can_b, can_c):
     options = [
     {
         'type': 'list',
@@ -148,33 +151,37 @@ def change():
     choice = (prompt(options)['choice'])
 
     if choice == 'Candidate A':
-        print(f"Candidate C currently has {voteFunc.overall[2]} votes")
+        print(f"Candidate A currently has {can_a} votes")
         votenum = input("How many votes do you want to give to Candidate A?")
         while not votenum.isnumeric():
             votenum = input("Please enter a number: ")
-            print(f"Successfully changed the amount of votes to {votenum}")
-        voteFunc.overall[0] = votenum
-        print(voteFunc.overall[0])
-        time.sleep(3)
+        
+        print(f"Successfully changed the amount of votes to {votenum}")
+        can_a = votenum
+        time.sleep(2)
 
     elif choice == 'Candidate B':
-        print(f"Candidate C currently has {voteFunc.overall[2]} votes")
+        print(f"Candidate B currently has {can_b} votes")
         votenum = int(input("How many votes do you want to give to Candidate B?"))
         while not votenum.isnumeric():
-            votenum = int(input("Please enter a number: "))
-            print(f"Successfully changed the amount of votes to {votenum}")
-
-        voteFunc.overall[1] = votenum
+            votenum = input("Please enter a number: ")
+        
+        print(f"Successfully changed the amount of votes to {votenum}")
+        can_a = votenum
+        time.sleep(2)
 
     elif choice == 'Candidate C':
-        print(f"Candidate C currently has {voteFunc.overall[2]} votes")
+        print(f"Candidate C currently has {can_c} votes")
         votenum = int(input("How many votes do you want to give to Candidate C?"))
         
-        while type(votenum) != int:
-            votenum = int(input("Please enter a number: "))
-        voteFunc.overall[2] = votenum
+        while not votenum.isnumeric():
+            votenum = input("Please enter a number: ")
+        
+        print(f"Successfully changed the amount of votes to {votenum}")
+        can_a = votenum
+        time.sleep(2)
 
-    if choice == 'Return to voting':
+    elif choice == 'Return to voting':
         os.system('clear')
     
 # Displays votes to screen
@@ -184,13 +191,13 @@ def display(allVotes):
     totalvotes = 0
     for item in allVotes:
         print(f"{choices[i]} has {item} votes.")
-        totalvotes += item
+        totalvotes += int(item)
         i += 1
     
     print(f"Total votes: {totalvotes}")
 
 # Admin screen 
-def admin():
+def admin(can_a, can_b, can_c, overall):
     os.system("clear")
     print(" VOTING SYSTEM \n")
     
@@ -215,28 +222,33 @@ def admin():
     choice = (prompt(options)['choice'])
 
     if choice == 'Save Data':
-        save(voteFunc.overall)
+        save(overall)
 
     if choice == 'Load Data':
-        load()
+        can_a, can_b, can_c = load(can_a, can_b, can_c)
 
     if choice == 'Display votes':
         os.system('clear')
-        display(voteFunc.overall)
+        display(overall)
         time.sleep(3)
 
     if choice == 'Alter votes':
-        change()
+        change(can_a, can_b, can_c)
 
     if choice == 'Return to voting':
+        
+        n = 1
+        return n
+        time.sleep(3)
         os.system('clear')
 
+    
         
 
 # Calling function and stopping if any errors
 if __name__ == '__main__':
     try:
-        voteFunc(voteValue)
+        voteFunc(voteValue, can_a, can_b, can_c)
     except KeyboardInterrupt:
         print('KeyboardInterrupt')
     except RuntimeError:
