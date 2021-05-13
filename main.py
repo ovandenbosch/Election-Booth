@@ -11,12 +11,12 @@ from PyInquirer import prompt
 import os
 import time
 
+can_a = 0
+can_b = 0
+can_c = 0
 voteValue = 1
-def voteFunc(value):
+def voteFunc(value, can_a, can_b, can_c):
 
-    can_a = 0
-    can_b = 0
-    can_c = 0
     # Amount of votes per candidate at beginning
 
     vote = ""
@@ -79,27 +79,9 @@ def voteFunc(value):
                     time.sleep(1)
                     
             if Logged_in == True:
-                choice = admin()
+                admin(can_a, can_b, can_c, overall)
                 value = admin.value
 
-                if choice == 'Save Data':
-                    save(overall)
-
-                elif choice == 'Load Data':
-                    can_a, can_b, can_c = load(can_a, can_b, can_c)
-
-                elif choice == 'Display votes':
-                    os.system('clear')
-                    display(overall)
-                    time.sleep(3)
-
-                elif choice == 'Alter votes':
-                    change(can_a, can_b, can_c)
-
-                elif choice == 'Return to voting':
-                    pass
-        
-                print(choice)
                 print(can_a)
                 time.sleep(3)
                 Logged_in = False
@@ -128,10 +110,12 @@ def voteFunc(value):
     
 
 # Saves vote data to a text file
-def save(allVotes):
+def save(allVotes, can_a, can_b, can_c):
     with open("votes.txt", "w") as voteFile:
         for voteitem in allVotes:
             voteFile.write(f"{voteitem}, \n")
+    os.system('clear')
+    voteFunc(can_a, can_b, can_c, voteValue)
 
 # Loads existing data from a text file
 def load(can_a, can_b, can_c):
@@ -142,11 +126,14 @@ def load(can_a, can_b, can_c):
         for voteitem in items:
             voteitem = int(voteitem.split(', \n')[0])
             array.append(voteitem)
+            
+    print(array)
+    time.sleep(3)
     can_a = array[0]
     can_b = array[1]
     can_c = array[2]
 
-    return can_a, can_b, can_c
+    voteFunc(can_a, can_b, can_c, voteValue)
        
     
 
@@ -198,8 +185,11 @@ def change(can_a, can_b, can_c):
         can_a = votenum
         time.sleep(2)
 
+
     elif choice == 'Return to voting':
         os.system('clear')
+
+    voteFunc(can_a, can_b, can_c, voteValue)
     
 # Displays votes to screen
 def display(allVotes):
@@ -214,7 +204,7 @@ def display(allVotes):
     print(f"Total votes: {totalvotes}")
 
 # Admin screen 
-def admin():
+def admin(can_a, can_b, can_c, overall):
     os.system("clear")
     print(" VOTING SYSTEM \n")
     
@@ -237,7 +227,22 @@ def admin():
     }]
 
     choice = (prompt(options)['choice'])
-    return choice
+    if choice == 'Save Data':
+        save(allVotes=overall, can_a=can_a, can_b=can_b, can_c=can_c)
+
+    elif choice == 'Load Data':
+        load(can_a, can_b, can_c)
+
+    elif choice == 'Display votes':
+        os.system('clear')
+        display(overall)
+        time.sleep(3)
+
+    elif choice == 'Alter votes':
+        change(can_a, can_b, can_c)
+
+    elif choice == 'Return to voting':
+        pass
 
     
 
@@ -246,7 +251,7 @@ def admin():
 # Calling function and stopping if any errors
 if __name__ == '__main__':
     try:
-        voteFunc(voteValue)
+        voteFunc(voteValue, can_a, can_b, can_c)
     except KeyboardInterrupt:
         print('KeyboardInterrupt')
     except RuntimeError:
