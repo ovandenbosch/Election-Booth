@@ -14,7 +14,7 @@ import time
 voteValue = 1
 def voteFunc(value):
 
-    candd_a = 0
+    can_a = 0
     can_b = 0
     can_c = 0
     # Amount of votes per candidate at beginning
@@ -79,16 +79,34 @@ def voteFunc(value):
                     time.sleep(1)
                     
             if Logged_in == True:
-                admin(candd_a, can_b, can_c, overall)
+                choice = admin()
                 value = admin.value
-                
-                print(candd_a)
+
+                if choice == 'Save Data':
+                    save(overall)
+
+                elif choice == 'Load Data':
+                    can_a, can_b, can_c = load(can_a, can_b, can_c)
+
+                elif choice == 'Display votes':
+                    os.system('clear')
+                    display(overall)
+                    time.sleep(3)
+
+                elif choice == 'Alter votes':
+                    change(can_a, can_b, can_c)
+
+                elif choice == 'Return to voting':
+                    pass
+        
+                print(choice)
+                print(can_a)
                 time.sleep(3)
                 Logged_in = False
          
         # Adds votes - uses value keyword as we don't know whether the value will be 1 or 100,000
         if vote.lower() == "a":
-            candd_a += value
+            can_a += value
             value = 1
 
         elif vote.lower() == "b":
@@ -101,8 +119,7 @@ def voteFunc(value):
 
         
 
-        overall = [candd_a, can_b, can_c]
-        voteFunc.overall = overall    
+        overall = [can_a, can_b, can_c]   
         os.system('clear')
         
     # Refers to display function
@@ -121,15 +138,15 @@ def load(can_a, can_b, can_c):
     
     with open("votes.txt", "r") as voteFile:
         items = voteFile.readlines()
+        array = []
         for voteitem in items:
             voteitem = int(voteitem.split(', \n')[0])
+            array.append(voteitem)
+    can_a = array[0]
+    can_b = array[1]
+    can_c = array[2]
 
-    can_a += 3
-    can_b += 3
-    can_c += 3
-        
-        
-    
+    return can_a, can_b, can_c
        
     
 
@@ -197,7 +214,7 @@ def display(allVotes):
     print(f"Total votes: {totalvotes}")
 
 # Admin screen 
-def admin(can_a, can_b, can_c, overall):
+def admin():
     os.system("clear")
     print(" VOTING SYSTEM \n")
     
@@ -220,26 +237,7 @@ def admin(can_a, can_b, can_c, overall):
     }]
 
     choice = (prompt(options)['choice'])
-
-    if choice == 'Save Data':
-        save(overall)
-
-    if choice == 'Load Data':
-        load(can_a, can_b, can_c)
-
-    if choice == 'Display votes':
-        os.system('clear')
-        display(overall)
-        time.sleep(3)
-
-    if choice == 'Alter votes':
-        change(can_a, can_b, can_c)
-
-    if choice == 'Return to voting':
-        
-        can_a = 2344
-        time.sleep(3)
-        os.system('clear')
+    return choice
 
     
 
