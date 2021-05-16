@@ -20,6 +20,7 @@ candidate_b = 0
 candidate_c = 0
 voteValue = 1
 
+# Main voting function
 def voteFunc(value, can_a, can_b, can_c):
     os.system('clear')
 
@@ -112,27 +113,27 @@ def voteFunc(value, can_a, can_b, can_c):
     elif vote.lower() == 'end':
         overall = [can_a, can_b, can_c]
         display(overall)
-    
-   
 
-# Saves vote data to a text file
+# Save vote data to a text file
 def save(allVotes, can_a, can_b, can_c):
+    # Open file
     with open("votes.txt", "w") as voteFile:
         for voteitem in allVotes:
+            # Write information
             voteFile.write(f"{voteitem}, \n")
     os.system('clear')
     voteFunc(voteValue, can_a, can_b, can_c)
 
 # Loads existing data from a text file
 def load(can_a, can_b, can_c):
-    
+    # Opens file
     with open("votes.txt", "r") as voteFile:
         items = voteFile.readlines()
         array = []
         for voteitem in items:
             voteitem = int(voteitem.split(', \n')[0])
             array.append(voteitem)
-            
+    # Adds item to array    
     can_a = array[0]
     can_b = array[1]
     can_c = array[2]
@@ -155,8 +156,10 @@ def change(can_a, can_b, can_c):
         ]
     }]
 
+    # Nice prompt
     choice = (prompt(options)['choice'])
 
+    # Allow user to specify how many votes to alter
     if choice == 'Candidate A':
         print(f"Candidate A currently has {can_a} votes")
         votenum = input("How many votes do you want to give to Candidate A? ")
@@ -223,13 +226,13 @@ def admin(can_a, can_b, can_c, overall):
             'Save Data',
             'Load Data',
             'Display votes',
-            # 'Alter votes',
             'Alter votes',
             'Return to voting'
         ]
     }]
-
+    # Prompt to choose what option you do
     choice = (prompt(options)['choice'])
+    
     if choice == 'Save Data':
         save(allVotes=overall, can_a=can_a, can_b=can_b, can_c=can_c)
 
