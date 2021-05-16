@@ -112,6 +112,7 @@ def voteFunc(value, can_a, can_b, can_c):
     elif vote.lower() == 'end':
         overall = [can_a, can_b, can_c]
         display(overall)
+        time.sleep(5)
 
 # Save vote data to a text file
 def save(allVotes, can_a, can_b, can_c):
