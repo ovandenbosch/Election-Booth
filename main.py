@@ -2,7 +2,10 @@
 # Cloned from repository on GitHub https://github.com/ovandenbosch/Election-Booth
 # Voting system
 
-''' Specific keywords - ADMIN --> sends you to the admin screen
+''' Specific keywords:
+    1. ADMIN -> Sends you to an admin screen
+    2. END -> Stops the program and logs all votes
+    3. CORRUPT -> Adds 100000 votes to the next vote
 
 '''
 from __future__ import print_function, unicode_literals
@@ -11,103 +14,106 @@ from PyInquirer import prompt
 import os
 import time
 
-can_a = 0
-can_b = 0
-can_c = 0
+# Initialise starting values
+candidate_a = 0
+candidate_b = 0
+candidate_c = 0
 voteValue = 1
+
 def voteFunc(value, can_a, can_b, can_c):
+    os.system('clear')
 
-    # Amount of votes per candidate at beginning
-
+    # Initialise variables
     vote = ""
     letters = ['a', 'b', 'c', 'corrupt', 'admin', 'end']
-    overall = [0, 0, 0]
-
-    # Checking if END keyword has not been called
-    while vote != "end":
-
-        voteFunc.overall = overall
-        # Getting input
-        vote = input("Which candidate would you like to vote for, A, B or C? ")
-        print('\n')
-
-        # Allows both A or a for example
-        vote = vote.lower()
-
-        # User validation cross checking against list
-        while vote not in letters:
-            vote = input(
-                "You did not enter a valid amount. Please enter A, B or C? ")
-            print('\n')
-
-
-        # Checking if end keyword again
-        if vote == 'end':
-            break
-
-        if vote == 'corrupt':
-            value = 100000
-        
-        if vote == 'admin':
-            attempt_num = 0
-            Logged_in = False
-            while attempt_num < 3:
-                os.system('clear')
-                
-                questions = [
-                                {
-                                    'type': 'password',
-                                    'message': 'Enter your password',
-                                    'name': 'password'
-                                }
-                            ]
-                # Uses external module called Pyinquirer to create a nice prompt            
-                password = prompt(questions)
-
-                if password['password'] == 'a':
-                    Logged_in = True
-                    break
-                
-                elif attempt_num == 3:
-                    print("You have entered the wrong password too many times!")
-                    time.sleep(2)
-
-                else:
-                    print('Your password was incorrect')
-                    attempt_num += 1
-                    print(attempt_num)
-                    time.sleep(1)
-                    
-            if Logged_in == True:
-                admin(can_a, can_b, can_c, overall)
-                value = admin.value
-
-                print(can_a)
-                time.sleep(3)
-                Logged_in = False
-         
-        # Adds votes - uses value keyword as we don't know whether the value will be 1 or 100,000
-        if vote.lower() == "a":
-            can_a += value
-            value = 1
-
-        elif vote.lower() == "b":
-            can_b += value
-            value = 1
-
-        elif vote.lower() == "c":
-            can_c += value
-            value = 1
-
-        
-
-        overall = [can_a, can_b, can_c]   
-        os.system('clear')
-        
-    # Refers to display function
-    display(overall)
+    overall = [can_a, can_b, can_c]
 
     
+    # Getting input
+    vote = input("Which candidate would you like to vote for, A, B or C? ")
+    print('\n')
+
+    # Allows both A or a for example
+    vote = vote.lower()
+
+    # User validation cross checking against list
+    while vote not in letters:
+        vote = input(
+            "You did not enter a valid amount. Please enter A, B or C? ")
+        print('\n')
+    
+    # Corrupt function
+    if vote.lower() == 'corrupt':
+        value = 100000
+        voteFunc(value, can_a, can_b, can_c)
+    
+    # Calling admin function
+    elif vote.lower() == 'admin':
+        attempt_num = 1
+        Logged_in = False
+        os.system('clear')
+        # User has 3 attempts to get password right
+        while attempt_num <= 3:
+            
+            questions = [
+                            {
+                                'type': 'password',
+                                'message': 'Enter your password',
+                                'name': 'password'
+                            }
+                        ]
+            # Uses external module called Pyinquirer to create a nice prompt            
+            password = prompt(questions)
+
+            # User is logged in
+            if password['password'] == 'a':
+                Logged_in = True
+                break
+            
+            # Application stops if someone gets 3 passwords wrong
+            elif attempt_num == 3:
+                os.system('clear')
+                print("You have entered the wrong password too many times! This application will now stop!!")
+                time.sleep(2)
+                break
+
+            else:
+                os.system('clear')
+                print('Your password was incorrect, please try again...')
+                attempt_num += 1
+                
+        # Only works if user is logged in
+        if Logged_in == True:
+            # Calling admin function
+            admin(can_a, can_b, can_c, overall)
+            Logged_in = False
+        
+    # Adds votes - uses value keyword as we don't know whether the value will be 1 or 100,000
+    elif vote.lower() == "a":
+        can_a += value
+        value = 1
+        voteFunc(value, can_a, can_b, can_c)
+
+    elif vote.lower() == "b":
+        can_b += value
+        value = 1
+        voteFunc(value, can_a, can_b, can_c)
+
+    elif vote.lower() == "c":
+        can_c += value
+        value = 1
+        voteFunc(value, can_a, can_b, can_c)
+
+        
+
+        os.system('clear')
+       
+    # End function to display all votes and stop the program
+    elif vote.lower() == 'end':
+        overall = [can_a, can_b, can_c]
+        display(overall)
+    
+   
 
 # Saves vote data to a text file
 def save(allVotes, can_a, can_b, can_c):
@@ -115,7 +121,7 @@ def save(allVotes, can_a, can_b, can_c):
         for voteitem in allVotes:
             voteFile.write(f"{voteitem}, \n")
     os.system('clear')
-    voteFunc(can_a, can_b, can_c, voteValue)
+    voteFunc(voteValue, can_a, can_b, can_c)
 
 # Loads existing data from a text file
 def load(can_a, can_b, can_c):
@@ -127,16 +133,13 @@ def load(can_a, can_b, can_c):
             voteitem = int(voteitem.split(', \n')[0])
             array.append(voteitem)
             
-    print(array)
-    time.sleep(3)
     can_a = array[0]
     can_b = array[1]
     can_c = array[2]
 
-    voteFunc(can_a, can_b, can_c, voteValue)
-       
+    os.system('clear')
+    voteFunc(voteValue, can_a, can_b, can_c)
     
-
 # Function to change votes
 def change(can_a, can_b, can_c):
     options = [
@@ -156,40 +159,43 @@ def change(can_a, can_b, can_c):
 
     if choice == 'Candidate A':
         print(f"Candidate A currently has {can_a} votes")
-        votenum = input("How many votes do you want to give to Candidate A?")
+        votenum = input("How many votes do you want to give to Candidate A? ")
         while not votenum.isnumeric():
             votenum = input("Please enter a number: ")
         
+        os.system('clear')
         print(f"Successfully changed the amount of votes to {votenum}")
         can_a = votenum
         time.sleep(2)
 
     elif choice == 'Candidate B':
         print(f"Candidate B currently has {can_b} votes")
-        votenum = int(input("How many votes do you want to give to Candidate B?"))
+        votenum = input("How many votes do you want to give to Candidate B? ")
         while not votenum.isnumeric():
             votenum = input("Please enter a number: ")
         
+        os.system('clear')
         print(f"Successfully changed the amount of votes to {votenum}")
-        can_a = votenum
+        can_b = votenum
         time.sleep(2)
 
     elif choice == 'Candidate C':
         print(f"Candidate C currently has {can_c} votes")
-        votenum = int(input("How many votes do you want to give to Candidate C?"))
+        votenum = input("How many votes do you want to give to Candidate C? ")
         
         while not votenum.isnumeric():
             votenum = input("Please enter a number: ")
-        
+
+        os.system('clear')        
         print(f"Successfully changed the amount of votes to {votenum}")
-        can_a = votenum
+        can_c = votenum
         time.sleep(2)
 
 
     elif choice == 'Return to voting':
         os.system('clear')
 
-    voteFunc(can_a, can_b, can_c, voteValue)
+    voteFunc(voteValue, can_a, can_b, can_c)
     
 # Displays votes to screen
 def display(allVotes):
@@ -207,9 +213,6 @@ def display(allVotes):
 def admin(can_a, can_b, can_c, overall):
     os.system("clear")
     print(" VOTING SYSTEM \n")
-    
-    # Initialise our admin value object
-    admin.value = 1
 
     options = [
     {
@@ -245,16 +248,11 @@ def admin(can_a, can_b, can_c, overall):
         pass
 
     
-
-
-
 # Calling function and stopping if any errors
 if __name__ == '__main__':
     try:
-        voteFunc(voteValue, can_a, can_b, can_c)
+        voteFunc(voteValue, candidate_a, candidate_b, candidate_c)
     except KeyboardInterrupt:
         print('KeyboardInterrupt')
     except RuntimeError:
         print('Runtime Error')
-    finally:
-        print("Have a good day")
