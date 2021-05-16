@@ -9,7 +9,6 @@
 
 '''
 from __future__ import print_function, unicode_literals
-from typing import overload
 from PyInquirer import prompt
 import os
 import time
@@ -232,7 +231,7 @@ def admin(can_a, can_b, can_c, overall):
     }]
     # Prompt to choose what option you do
     choice = (prompt(options)['choice'])
-    
+
     if choice == 'Save Data':
         save(allVotes=overall, can_a=can_a, can_b=can_b, can_c=can_c)
 
