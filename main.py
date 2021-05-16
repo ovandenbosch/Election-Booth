@@ -85,7 +85,7 @@ def voteFunc(value, can_a, can_b, can_c):
         # Only works if user is logged in
         if Logged_in == True:
             # Calling admin function
-            admin(can_a, can_b, can_c, overall)
+            admin(overall, can_a, can_b, can_c)
             Logged_in = False
         
     # Adds votes - uses value keyword as we don't know whether the value will be 1 or 100,000
@@ -112,7 +112,6 @@ def voteFunc(value, can_a, can_b, can_c):
     elif vote.lower() == 'end':
         overall = [can_a, can_b, can_c]
         display(overall)
-        time.sleep(5)
 
 # Save vote data to a text file
 def save(allVotes, can_a, can_b, can_c):
@@ -122,7 +121,11 @@ def save(allVotes, can_a, can_b, can_c):
             # Write information
             voteFile.write(f"{voteitem}, \n")
     os.system('clear')
-    voteFunc(voteValue, can_a, can_b, can_c)
+    print("Data has been saved...")
+    time.sleep(3)
+    overall = [can_a, can_b, can_c]
+    # Return to admin screen
+    admin(overall, can_a, can_b, can_c)
 
 # Loads existing data from a text file
 def load(can_a, can_b, can_c):
@@ -139,7 +142,9 @@ def load(can_a, can_b, can_c):
     can_c = array[2]
 
     os.system('clear')
-    voteFunc(voteValue, can_a, can_b, can_c)
+    overall = [can_a, can_b, can_c]
+    # Return to admin screen
+    admin(overall, can_a, can_b, can_c)
     
 # Function to change votes
 def change(can_a, can_b, can_c):
@@ -198,7 +203,9 @@ def change(can_a, can_b, can_c):
     elif choice == 'Return to voting':
         os.system('clear')
 
-    voteFunc(voteValue, can_a, can_b, can_c)
+    overall = [can_a, can_b, can_c]
+    # Return to admin screen
+    admin(overall, can_a, can_b, can_c)
     
 # Displays votes to screen
 def display(allVotes):
@@ -213,7 +220,7 @@ def display(allVotes):
     print(f"Total votes: {totalvotes}")
 
 # Admin screen 
-def admin(can_a, can_b, can_c, overall):
+def admin(overall, can_a, can_b, can_c):
     os.system("clear")
     print(" VOTING SYSTEM \n")
 
@@ -231,8 +238,10 @@ def admin(can_a, can_b, can_c, overall):
         ]
     }]
     # Prompt to choose what option you do
+    
+    
+    os.system('clear')
     choice = (prompt(options)['choice'])
-
     if choice == 'Save Data':
         save(allVotes=overall, can_a=can_a, can_b=can_b, can_c=can_c)
 
@@ -243,12 +252,14 @@ def admin(can_a, can_b, can_c, overall):
         os.system('clear')
         display(overall)
         time.sleep(3)
+        # Call admin object again
+        admin(overall, can_a, can_b, can_c)
 
     elif choice == 'Alter votes':
         change(can_a, can_b, can_c)
 
     elif choice == 'Return to voting':
-        pass
+        voteFunc(voteValue, can_a, can_b, can_c)
 
     
 # Calling function and stopping if any errors
