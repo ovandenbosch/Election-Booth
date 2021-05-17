@@ -133,7 +133,6 @@ def save(allVotes, can_a, can_b, can_c, names):
     # Open file for names
     with open("names.txt", "w") as nameFile:
         for name in names:
-            time.sleep(3)
             nameFile.write(f"{name}, ")
 
     overall = [can_a, can_b, can_c]
@@ -242,7 +241,7 @@ def display(allVotes, names):
         i += 1
     
     print(f"Total votes: {totalvotes}")
-    print(names)
+    print(f"The voters details: \n {names}")
 
 # Admin screen 
 def admin(overall, can_a, can_b, can_c, names):
@@ -281,7 +280,7 @@ def admin(overall, can_a, can_b, can_c, names):
         admin(overall, can_a, can_b, can_c, names)
 
     elif choice == 'Alter votes':
-        change(can_a, can_b, can_c)
+        change(can_a, can_b, can_c, names)
 
     elif choice == 'Return to voting':
         voteFunc(voteValue, can_a, can_b, can_c, names)
