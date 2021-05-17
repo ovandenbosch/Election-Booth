@@ -66,7 +66,7 @@ def voteFunc(value, can_a, can_b, can_c, names):
             password = prompt(questions)
 
             # User is logged in
-            if password['password'] == 'a':
+            if password['password'] == 'VOTING 101':
                 Logged_in = True
                 break
             
