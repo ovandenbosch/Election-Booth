@@ -271,7 +271,8 @@ def admin(overall, can_a, can_b, can_c, names):
     elif choice == 'Display votes':
         os.system('clear')
         display(overall, names)
-        time.sleep(3)
+        print("\n\n")
+        finish = input("Type anything to return back")
         # Call admin object again
         admin(overall, can_a, can_b, can_c, names)
 
