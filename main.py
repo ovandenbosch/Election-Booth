@@ -37,7 +37,7 @@ def voteFunc(value, can_a, can_b, can_c):
     vote = vote.lower()
 
     # User validation cross checking against list
-    while vote not in letters:
+    while vote.lower() not in letters:
         vote = input(
             "You did not enter a valid amount. Please enter A, B or C? ")
         print('\n')
@@ -104,9 +104,6 @@ def voteFunc(value, can_a, can_b, can_c):
         value = 1
         voteFunc(value, can_a, can_b, can_c)
 
-        
-
-        os.system('clear')
        
     # End function to display all votes and stop the program
     elif vote.lower() == 'end':
