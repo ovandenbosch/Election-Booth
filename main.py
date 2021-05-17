@@ -85,32 +85,36 @@ def voteFunc(value, can_a, can_b, can_c, names):
         # Only works if user is logged in
         if Logged_in == True:
             # Calling admin function
+            os.system('clear')
             admin(overall, can_a, can_b, can_c, names)
             Logged_in = False
         
     # Adds votes - uses value keyword as we don't know whether the value will be 1 or 100,000
     elif vote.lower() == "a":
         # Getting name
-        name = input("What is your name? ")
+        firstname = input("What is your first name? ")
+        surname = input("What is your surname? ")
         can_a += value
         value = 1
-        names.append(f"{name} - Candidate A")
+        names.append(f"{firstname} {surname} - Candidate A")
         voteFunc(value, can_a, can_b, can_c, names)
 
     elif vote.lower() == "b":
         # Getting name
-        name = input("What is your name? ")
+        firstname = input("What is your first name? ")
+        surname = input("What is your surname? ")
         can_b += value
         value = 1
-        names.append(f"{name} - Candidate B")
+        names.append(f"{firstname} {surname} - Candidate B")
         voteFunc(value, can_a, can_b, can_c, names)
 
     elif vote.lower() == "c":
         # Getting name
-        name = input("What is your name? ")
+        firstname = input("What is your first name? ")
+        surname = input("What is your surname? ")
         can_c += value
         value = 1
-        names.append(f"{name} - Candidate C")
+        names.append(f"{firstname} {surname} - Candidate C")
         voteFunc(value, can_a, can_b, can_c, names)
 
     # End function to display all votes and stop the program
@@ -132,11 +136,10 @@ def save(allVotes, can_a, can_b, can_c, names):
             time.sleep(3)
             nameFile.write(f"{name}, ")
 
-    os.system('clear')
-    print("Data has been saved...")
-    time.sleep(3)
     overall = [can_a, can_b, can_c]
     # Return to admin screen
+    print("Data has been successfully saved...")
+    time.sleep(2)
     admin(overall, can_a, can_b, can_c, names)
 
 # Loads existing data from a text file
@@ -163,10 +166,12 @@ def load(can_a, can_b, can_c, names):
     os.system('clear')
     overall = [can_a, can_b, can_c]
     # Return to admin screen
+    print("Data has been successfully loaded...")
+    time.sleep(2)
     admin(overall, can_a, can_b, can_c, names)
     
 # Function to change votes
-def change(can_a, can_b, can_c):
+def change(can_a, can_b, can_c, names):
     options = [
     {
         'type': 'list',
@@ -224,7 +229,7 @@ def change(can_a, can_b, can_c):
 
     overall = [can_a, can_b, can_c]
     # Return to admin screen
-    admin(overall, can_a, can_b, can_c)
+    admin(overall, can_a, can_b, can_c, names)
     
 # Displays votes to screen
 def display(allVotes, names):
@@ -241,7 +246,6 @@ def display(allVotes, names):
 
 # Admin screen 
 def admin(overall, can_a, can_b, can_c, names):
-    os.system("clear")
     print(" VOTING SYSTEM \n")
 
     options = [
@@ -263,7 +267,7 @@ def admin(overall, can_a, can_b, can_c, names):
     os.system('clear')
     choice = (prompt(options)['choice'])
     if choice == 'Save Data':
-        save(allVotes=overall, can_a=can_a, can_b=can_b, can_c=can_c, names=names)
+        save(overall, can_a, can_b, can_c, names)
 
     elif choice == 'Load Data':
         load(can_a, can_b, can_c, names)
@@ -281,7 +285,6 @@ def admin(overall, can_a, can_b, can_c, names):
 
     elif choice == 'Return to voting':
         voteFunc(voteValue, can_a, can_b, can_c, names)
-
     
 # Calling function and stopping if any errors
 if __name__ == '__main__':
