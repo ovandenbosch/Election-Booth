@@ -18,9 +18,10 @@ candidate_a = 0
 candidate_b = 0
 candidate_c = 0
 voteValue = 1
+names_array = []
 
 # Main voting function
-def voteFunc(value, can_a, can_b, can_c):
+def voteFunc(value, can_a, can_b, can_c, names):
     os.system('clear')
 
     # Initialise variables
@@ -28,7 +29,6 @@ def voteFunc(value, can_a, can_b, can_c):
     letters = ['a', 'b', 'c', 'corrupt', 'admin', 'end']
     overall = [can_a, can_b, can_c]
 
-    
     # Getting input
     vote = input("Which candidate would you like to vote for, A, B or C? ")
     print('\n')
@@ -85,47 +85,62 @@ def voteFunc(value, can_a, can_b, can_c):
         # Only works if user is logged in
         if Logged_in == True:
             # Calling admin function
-            admin(overall, can_a, can_b, can_c)
+            admin(overall, can_a, can_b, can_c, names)
             Logged_in = False
         
     # Adds votes - uses value keyword as we don't know whether the value will be 1 or 100,000
     elif vote.lower() == "a":
+        # Getting name
+        name = input("What is your name? ")
         can_a += value
         value = 1
-        voteFunc(value, can_a, can_b, can_c)
+        names.append(f"{name} - Candidate A")
+        voteFunc(value, can_a, can_b, can_c, names)
 
     elif vote.lower() == "b":
+        # Getting name
+        name = input("What is your name? ")
         can_b += value
         value = 1
-        voteFunc(value, can_a, can_b, can_c)
+        names.append(f"{name} - Candidate B")
+        voteFunc(value, can_a, can_b, can_c, names)
 
     elif vote.lower() == "c":
+        # Getting name
+        name = input("What is your name? ")
         can_c += value
         value = 1
-        voteFunc(value, can_a, can_b, can_c)
+        names.append(f"{name} - Candidate C")
+        voteFunc(value, can_a, can_b, can_c, names)
 
-       
     # End function to display all votes and stop the program
     elif vote.lower() == 'end':
         overall = [can_a, can_b, can_c]
-        display(overall)
+        display(overall, names)
 
 # Save vote data to a text file
-def save(allVotes, can_a, can_b, can_c):
-    # Open file
+def save(allVotes, can_a, can_b, can_c, names):
+    # Open file for votes
     with open("votes.txt", "w") as voteFile:
         for voteitem in allVotes:
             # Write information
             voteFile.write(f"{voteitem}, \n")
+
+    # Open file for names
+    with open("names.txt", "w") as nameFile:
+        for name in names:
+            time.sleep(3)
+            nameFile.write(f"{name}, ")
+
     os.system('clear')
     print("Data has been saved...")
     time.sleep(3)
     overall = [can_a, can_b, can_c]
     # Return to admin screen
-    admin(overall, can_a, can_b, can_c)
+    admin(overall, can_a, can_b, can_c, names)
 
 # Loads existing data from a text file
-def load(can_a, can_b, can_c):
+def load(can_a, can_b, can_c, names):
     # Opens file
     with open("votes.txt", "r") as voteFile:
         items = voteFile.readlines()
@@ -133,15 +148,22 @@ def load(can_a, can_b, can_c):
         for voteitem in items:
             voteitem = int(voteitem.split(', \n')[0])
             array.append(voteitem)
+
+    # Open name file
+    with open("names.txt", "r") as nameFile:
+        newnames = []
+        for item in nameFile:
+            newnames.append(item)
     # Adds item to array    
     can_a = array[0]
     can_b = array[1]
     can_c = array[2]
+    names = newnames
 
     os.system('clear')
     overall = [can_a, can_b, can_c]
     # Return to admin screen
-    admin(overall, can_a, can_b, can_c)
+    admin(overall, can_a, can_b, can_c, names)
     
 # Function to change votes
 def change(can_a, can_b, can_c):
@@ -205,7 +227,7 @@ def change(can_a, can_b, can_c):
     admin(overall, can_a, can_b, can_c)
     
 # Displays votes to screen
-def display(allVotes):
+def display(allVotes, names):
     choices = ["Candidate A", "Candidate B", "Candidate C"]
     i = 0
     totalvotes = 0
@@ -215,9 +237,10 @@ def display(allVotes):
         i += 1
     
     print(f"Total votes: {totalvotes}")
+    print(names)
 
 # Admin screen 
-def admin(overall, can_a, can_b, can_c):
+def admin(overall, can_a, can_b, can_c, names):
     os.system("clear")
     print(" VOTING SYSTEM \n")
 
@@ -240,29 +263,29 @@ def admin(overall, can_a, can_b, can_c):
     os.system('clear')
     choice = (prompt(options)['choice'])
     if choice == 'Save Data':
-        save(allVotes=overall, can_a=can_a, can_b=can_b, can_c=can_c)
+        save(allVotes=overall, can_a=can_a, can_b=can_b, can_c=can_c, names=names)
 
     elif choice == 'Load Data':
-        load(can_a, can_b, can_c)
+        load(can_a, can_b, can_c, names)
 
     elif choice == 'Display votes':
         os.system('clear')
-        display(overall)
+        display(overall, names)
         time.sleep(3)
         # Call admin object again
-        admin(overall, can_a, can_b, can_c)
+        admin(overall, can_a, can_b, can_c, names)
 
     elif choice == 'Alter votes':
         change(can_a, can_b, can_c)
 
     elif choice == 'Return to voting':
-        voteFunc(voteValue, can_a, can_b, can_c)
+        voteFunc(voteValue, can_a, can_b, can_c, names)
 
     
 # Calling function and stopping if any errors
 if __name__ == '__main__':
     try:
-        voteFunc(voteValue, candidate_a, candidate_b, candidate_c)
+        voteFunc(voteValue, candidate_a, candidate_b, candidate_c, names_array)
     except KeyboardInterrupt:
         print('KeyboardInterrupt')
     except RuntimeError:
