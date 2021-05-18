@@ -5,8 +5,6 @@
 ## Don't commit vote totals
 votes.txt
 
-poetry.lock
-pyproject.toml
 ### macOS ###
 # General
 .DS_Store
