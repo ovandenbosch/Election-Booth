@@ -5,6 +5,7 @@
 ## Don't commit vote totals
 votes.txt
 
+
 ### macOS ###
 # General
 .DS_Store

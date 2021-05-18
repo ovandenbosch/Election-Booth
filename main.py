@@ -243,6 +243,29 @@ def display(allVotes, names):
     print(f"Total votes: {totalvotes}")
     print(f"The voters details: \n {names}")
 
+def search(names):
+    choice = input("For which candidate would you like to search for? (A, B, C) ")
+    values = ["A", "B", "C"]
+    while choice.upper() not in values:
+        choice = input("Please enter a valid candidate: ")
+
+    array_list = []
+    title = ""
+    
+    for name in names:
+        if name[-1] == choice.upper():
+            title = name[-11:]
+            name = name[:-14]
+            array_list.append(name)
+
+    print(f"Showing all votes made for {title}: \n")
+    for item in array_list:
+        print(item)
+
+    time.sleep(3)
+
+
+
 # Admin screen 
 def admin(overall, can_a, can_b, can_c, names):
     print(" VOTING SYSTEM \n")
@@ -257,6 +280,7 @@ def admin(overall, can_a, can_b, can_c, names):
             'Load Data',
             'Display votes',
             'Alter votes',
+            'Search',
             'Return to voting'
         ]
     }]
@@ -281,6 +305,9 @@ def admin(overall, can_a, can_b, can_c, names):
 
     elif choice == 'Alter votes':
         change(can_a, can_b, can_c, names)
+
+    elif choice == 'Search':
+        search(names)
 
     elif choice == 'Return to voting':
         voteFunc(voteValue, can_a, can_b, can_c, names)
