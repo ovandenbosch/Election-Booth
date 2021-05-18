@@ -299,7 +299,7 @@ def admin(overall, can_a, can_b, can_c, names):
         os.system('clear')
         display(overall, names)
         print("\n\n")
-        finish = input("Type anything to return back")
+        finish = input("Type anything to return back: ")
         # Call admin object again
         admin(overall, can_a, can_b, can_c, names)
 
