@@ -129,7 +129,6 @@ def save(allVotes, can_a, can_b, can_c, names):
         for voteitem in allVotes:
             # Write information
             voteFile.write(f"{voteitem}, \n")
-
     # Open file for names
     with open("names.txt", "w") as nameFile:
         for name in names:
