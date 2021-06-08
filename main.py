@@ -42,7 +42,6 @@ def vote(value):
     if vote == "CORRUPT":
         corrupt()
 
-
     elif vote == "ADMIN":
         admin()
 
@@ -88,8 +87,7 @@ def corrupt():
         "You did not enter a valid amount. Please enter A, B or C? ")
     print('\n')
 
-    votenum = input(f"How many votes do you want to give to {choice.upper()}? \
-    If your choice is more than 10 it may take some time because the program will generate fake names! ")
+    votenum = input(f"How many votes do you want to give to {choice.upper()}? \nIf your choice is more than 10 it may take some time because the program will generate fake names! ")
     while not votenum.isnumeric():
         votenum = input("Please enter a number: ")
 
@@ -104,6 +102,25 @@ def corrupt():
     print(f"Successfully added {votenum} votes to {choice.upper()}. You are a naughty little person 👿! ")
     time.sleep(3)
 
+def search():
+    choices = ["A", "B", "C"]
+    choice = input("For which candidate would you like to view who voted for them? ")
+    while choice.upper() not in choices:
+        choice = input("Please enter a valid amount: ")
+
+    os.system('clear')
+    print(f"Showing all people that voted for {choice.upper()}:")
+    print("----------------------------------------------- \n")
+
+    counter = 1
+    for item in votes.find():
+        if item["vote"] == choice.upper():
+            print(f"{counter}. {item['name']} voted at {item['time']}")
+            counter += 1
+    print("\n")
+    print("----------------------------------------------- \n")
+    print(f"{counter -1} people voted for {choice.upper()}")
+
 def admin():
     print(" VOTING SYSTEM \n")
 
@@ -115,7 +132,7 @@ def admin():
         'choices': [
             'Display votes',
             'Alter votes',
-            'Search',
+            'Search who voted for who',
             'Return to voting'
         ]
     }]
@@ -136,8 +153,8 @@ def admin():
     elif choice == 'Alter votes':
         pass
 
-    elif choice == 'Search':
-        pass
+    elif choice == 'Search who voted for who':
+        search()
 
     elif choice == 'Return to voting':
         pass
