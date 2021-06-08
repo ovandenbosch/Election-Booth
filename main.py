@@ -1,5 +1,4 @@
 from __future__ import print_function, unicode_literals
-from re import L
 from pymongo import MongoClient
 import os
 from dotenv import load_dotenv
