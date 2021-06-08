@@ -7,6 +7,8 @@ import time
 from pytz import timezone
 from PyInquirer import prompt
 import requests
+import colorama
+from colorama import Fore, Back, Style
 
 
 # config -------------------------------------------------------------------#
@@ -15,14 +17,20 @@ DB_KEY = os.getenv("DB_KEY")
 client = MongoClient(f"mongodb+srv://Oliver:{DB_KEY}@voters.9miwx.mongodb.net")
 db = client.main
 votes = db.votes
-
+colorama.init(autoreset=True)
 BST = timezone("Europe/London")
 tz = datetime.now(BST)
+titletime = tz.strftime('%a %d %b, %H:%M:%S')
+# Get terminal width so we can display title nicely
+cl = os.get_terminal_size().columns
+spaces = cl - 35
 #-------------------------------------------------------------------------------------#
 
 # Vote function
 def start():
     os.system('clear')
+    # Responsive title 
+    print(f"{Back.GREEN}{Fore.BLACK}VOTING SYSTEM {' ' * spaces} {titletime}")
 
     # Getting input
     user_input = input("Which candidate would you like to vote for, A, B or C? ")
@@ -45,6 +53,7 @@ def start():
         attempt_num = 1
         Logged_in = False
         os.system('clear')
+        print(f"{Back.GREEN}{Fore.BLACK}VOTING SYSTEM {' ' * spaces} {titletime}")
         # User has 3 attempts to get password right
         while attempt_num <= 3:
             
@@ -94,6 +103,8 @@ def start():
     
 
 def display():
+    os.system('clear')
+    print(f"{Back.GREEN}{Fore.BLACK}VOTING SYSTEM {' ' * spaces} {titletime}")
     a = 0
     b = 0
     c = 0
@@ -119,6 +130,7 @@ def display():
 
 def corrupt():
     os.system('clear')
+    print(f"{Back.GREEN}{Fore.BLACK}VOTING SYSTEM {' ' * spaces} {titletime}")
     choice = input("Which candidate would you like to corrupt? ")
     choices = ["A", "B", "C"]
     while choice.upper() not in choices:
@@ -143,6 +155,8 @@ def corrupt():
     time.sleep(3)
 
 def search():
+    os.system('clear')
+    print(f"{Back.GREEN}{Fore.BLACK}VOTING SYSTEM {' ' * spaces} {titletime}")
     choices = ["A", "B", "C"]
     choice = input("For which candidate would you like to view who voted for them? ")
     while choice.upper() not in choices:
@@ -169,7 +183,8 @@ def search():
     finish = input("\nPress enter to return... ")
 
 def admin():
-    print(" VOTING SYSTEM \n")
+    os.system('clear')
+    print(f"{Back.GREEN}{Fore.BLACK}VOTING SYSTEM {' ' * spaces} {titletime}")
 
     options = [
     {
@@ -186,7 +201,6 @@ def admin():
     # Prompt to choose what option you do
     
     
-    os.system('clear')
     choice = (prompt(options)['choice'])    
 
     if choice == 'Display votes':
