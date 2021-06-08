@@ -159,7 +159,12 @@ def search():
             counter += 1
     
     print("----------------------------------------------- \n")
-    print(f"{counter -1} people voted for {choice.upper()}")
+    if counter == 2:
+        num = "person"
+
+    else:
+        num = "people"
+    print(f"{counter -1} {num} voted for {choice.upper()}")
 
     finish = input("\nPress enter to return... ")
 
