@@ -24,13 +24,16 @@ titletime = tz.strftime('%a %d %b, %H:%M:%S')
 # Get terminal width so we can display title nicely
 cl = os.get_terminal_size().columns
 spaces = cl - 35
+
+def title():
+    print(f"{Back.GREEN}{Fore.BLACK}VOTING SYSTEM {' ' * spaces} {titletime}")
 #-------------------------------------------------------------------------------------#
 
 # Vote function
 def start():
     os.system('clear')
     # Responsive title 
-    print(f"{Back.GREEN}{Fore.BLACK}VOTING SYSTEM {' ' * spaces} {titletime}")
+    title()
 
     # Getting input
     user_input = input("Which candidate would you like to vote for, A, B or C? ")
@@ -53,7 +56,7 @@ def start():
         attempt_num = 1
         Logged_in = False
         os.system('clear')
-        print(f"{Back.GREEN}{Fore.BLACK}VOTING SYSTEM {' ' * spaces} {titletime}")
+        title()
         # User has 3 attempts to get password right
         while attempt_num <= 3:
             
@@ -99,12 +102,10 @@ def start():
         timenow = tz.strftime('%H:%M:%S %d/%m/%Y')
         votes.insert_one({"name": name, "vote": vote, "time": timenow})
         start()
-
-    
-
+   
 def display():
     os.system('clear')
-    print(f"{Back.GREEN}{Fore.BLACK}VOTING SYSTEM {' ' * spaces} {titletime}")
+    title()
     a = 0
     b = 0
     c = 0
@@ -130,7 +131,7 @@ def display():
 
 def corrupt():
     os.system('clear')
-    print(f"{Back.GREEN}{Fore.BLACK}VOTING SYSTEM {' ' * spaces} {titletime}")
+    title()
     choice = input("Which candidate would you like to corrupt? ")
     choices = ["A", "B", "C"]
     while choice.upper() not in choices:
@@ -156,7 +157,7 @@ def corrupt():
 
 def search():
     os.system('clear')
-    print(f"{Back.GREEN}{Fore.BLACK}VOTING SYSTEM {' ' * spaces} {titletime}")
+    title()
     choices = ["A", "B", "C"]
     choice = input("For which candidate would you like to view who voted for them? ")
     while choice.upper() not in choices:
@@ -182,9 +183,13 @@ def search():
 
     finish = input("\nPress enter to return... ")
 
+def alter():
+    title()
+
+
 def admin():
     os.system('clear')
-    print(f"{Back.GREEN}{Fore.BLACK}VOTING SYSTEM {' ' * spaces} {titletime}")
+    title()
 
     options = [
     {
@@ -212,7 +217,7 @@ def admin():
         admin()
 
     elif choice == 'Alter votes':
-        pass
+        alter()
 
     elif choice == 'Search who voted for who':
         search()
