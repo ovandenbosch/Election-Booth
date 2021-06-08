@@ -18,12 +18,10 @@ votes = db.votes
 
 BST = timezone("Europe/London")
 tz = datetime.now(BST)
-timenow = tz.strftime('%H:%M:%S %d/%m/%Y')
-value = 1
 #-------------------------------------------------------------------------------------#
 
 # Vote function
-def vote(value):
+def start():
     os.system('clear')
 
     # Getting input
@@ -43,14 +41,55 @@ def vote(value):
         corrupt()
 
     elif vote == "ADMIN":
-        admin()
+        # Validation
+        attempt_num = 1
+        Logged_in = False
+        os.system('clear')
+        # User has 3 attempts to get password right
+        while attempt_num <= 3:
+            
+            questions = [
+                            {
+                                'type': 'password',
+                                'message': 'Enter your password',
+                                'name': 'password'
+                            }
+                        ]
+            # Uses external module called Pyinquirer to create a nice prompt            
+            password = prompt(questions)
+
+            # User is logged in
+            if password['password'] == 'VOTING 101':
+                Logged_in = True
+                break
+            
+            # Application stops if someone gets 3 passwords wrong
+            elif attempt_num == 3:
+                os.system('clear')
+                print("You have entered the wrong password too many times! This application will now stop!!")
+                time.sleep(2)
+                break
+
+            else:
+                os.system('clear')
+                print('Your password was incorrect, please try again...')
+                attempt_num += 1
+                
+        # Only works if user is logged in
+        if Logged_in == True:
+            # Calling admin function
+            os.system('clear')
+            admin()
+            Logged_in = False
 
     elif vote == "END":
         display()
 
     elif vote == "A" or "B" or "C":
         name = input("What is your full name? ")
+        timenow = tz.strftime('%H:%M:%S %d/%m/%Y')
         votes.insert_one({"name": name, "vote": vote, "time": timenow})
+        start()
 
     
 
@@ -96,6 +135,7 @@ def corrupt():
         req = requests.get("https://api.namefake.com")
         res = req.json()
         name = res["name"]
+        timenow = tz.strftime('%H:%M:%S %d/%m/%Y')
         votes.insert_one({"name": name, "vote": choice.upper(), "time": timenow})
 
     os.system('clear')
@@ -117,9 +157,11 @@ def search():
         if item["vote"] == choice.upper():
             print(f"{counter}. {item['name']} voted at {item['time']}")
             counter += 1
-    print("\n")
+    
     print("----------------------------------------------- \n")
     print(f"{counter -1} people voted for {choice.upper()}")
+
+    finish = input("\nPress enter to return... ")
 
 def admin():
     print(" VOTING SYSTEM \n")
@@ -155,9 +197,15 @@ def admin():
 
     elif choice == 'Search who voted for who':
         search()
+        admin()
 
     elif choice == 'Return to voting':
-        pass
+        start()
 
-
-vote(value)
+if __name__ == "__main__":
+    try:
+        start()
+    except KeyboardInterrupt:
+        print("KeyboardInterrupt")
+    except RuntimeError:
+        print("Runtime Error")
