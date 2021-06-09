@@ -229,6 +229,10 @@ def alter():
 
         print(f"{Fore.GREEN}Votes successfully removed ...")
 
+def daybyday():
+    x = votes.find_one()
+    print("x", x)
+    time.sleep(3)
 
 def admin():
     os.system('clear')
@@ -243,6 +247,7 @@ def admin():
             'Display votes',
             'Alter votes',
             'Search who voted for who',
+            'Day by day totals',
             'Return to voting'
         ]
     }]
@@ -265,6 +270,9 @@ def admin():
     elif choice == 'Search who voted for who':
         search()
         admin()
+
+    elif choice == 'Day by day totals':
+        daybyday()
 
     elif choice == 'Return to voting':
         start()
