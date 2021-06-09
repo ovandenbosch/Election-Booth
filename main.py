@@ -120,13 +120,13 @@ def display():
             c += 1
     
     print(f"""
-    VOTING TOTALS:
+{Fore.GREEN}VOTING TOTALS:
 
-    Candidate A: {a}
-    Candidate B: {b}
-    Candidate C: {c}
+{Fore.CYAN}Candidate A: {a}
+{Fore.CYAN}Candidate B: {b}
+{Fore.CYAN}Candidate C: {c}
 
-    Total votes: {a+b+c}
+{Fore.GREEN}Total votes: {a+b+c}
     """)
 
 def corrupt():
@@ -185,7 +185,54 @@ def search():
 
 def alter():
     title()
+    display()
+    choice = input("Which candidate would you like to change the votes for? ")
+    choices = ["A", "B", "C"]
+    while choice.upper() not in choices:
+        choice = input(
+        "You did not enter a valid amount. Please enter A, B or C? ")
+    print('\n')
 
+    votenum = input(f"How many votes do you want {choice.upper()} to be changed to? ")
+    while not votenum.isnumeric():
+        votenum = input("Please enter a number: ")
+
+    counter = 0
+    for item in votes.find({"vote": choice.upper()}):
+        counter += 1
+
+    if counter < int(votenum):
+        to_add = int(votenum) - counter
+        print(f"{Fore.RED}{to_add} votes will be added...")
+        for i in range(0, int(votenum)):
+            req = requests.get("https://api.namefake.com")
+            res = req.json()
+            name = res["name"]
+            timenow = tz.strftime('%H:%M:%S %d/%m/%Y')
+            votes.insert_one({"name": name, "vote": choice.upper(), "time": timenow})
+
+        print(f"{Fore.GREEN}Votes successfully added ...")
+        
+    
+    elif counter > int(votenum):
+        to_remove = counter - int(votenum)
+
+        while to_remove < 0:
+            votenum = input("As you are trying to decrease the amount of votes, please make sure that there are enough votes to be removed... ")
+            to_remove = counter - int(votenum)
+
+
+        print(f"{Fore.RED}{to_remove} votes will be removed...")
+        print(to_remove)
+        for i in range(0, to_remove):
+            votes.delete_one({"vote": choice.upper()})
+
+        print(f"{Fore.GREEN}Votes successfully removed ...")
+
+def daybyday():
+    x = votes.find_one()
+    print("x", x)
+    time.sleep(3)
 
 def admin():
     os.system('clear')
@@ -200,6 +247,7 @@ def admin():
             'Display votes',
             'Alter votes',
             'Search who voted for who',
+            'Day by day totals',
             'Return to voting'
         ]
     }]
@@ -222,6 +270,9 @@ def admin():
     elif choice == 'Search who voted for who':
         search()
         admin()
+
+    elif choice == 'Day by day totals':
+        daybyday()
 
     elif choice == 'Return to voting':
         start()
