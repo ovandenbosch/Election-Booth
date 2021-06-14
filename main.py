@@ -193,7 +193,7 @@ def alter():
         "You did not enter a valid amount. Please enter A, B or C? ")
     print('\n')
 
-    votenum = input(f"How many votes do you want {choice.upper()} to be changed to? ")
+    votenum = input(f"How many votes do you want to be{choice.upper()} to be changed to? ")
     while not votenum.isnumeric():
         votenum = input("Please enter a number: ")
 
@@ -266,6 +266,7 @@ def admin():
 
     elif choice == 'Alter votes':
         alter()
+        admin()
 
     elif choice == 'Search who voted for who':
         search()
