@@ -7,6 +7,10 @@ authors = ["ovandenbosch <<>>"]
 [tool.poetry.dependencies]
 python = "^3.8"
 PyInquirer = "^1.0.3"
+pytz = "^2021.1"
+colorama = "^0.4.4"
+pymongo = "^3.11.4"
+python-dotenv = "^0.17.1"
 
 [tool.poetry.dev-dependencies]
 
